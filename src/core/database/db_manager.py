@@ -16,6 +16,7 @@ class DatabaseManager:
             expire_on_commit=False,
         )
 
+    # contextmanager use
     async def get_session(self) -> AsyncGenerator[AsyncSession, None]:
         async with self.session_factory() as session:
             yield session
