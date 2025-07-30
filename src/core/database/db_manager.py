@@ -22,7 +22,11 @@ class DatabaseManager:
             yield session
 
 
-db_manager = DatabaseManager(db_url=db_url.get_DB_URL)
+db_auth_manager = DatabaseManager(db_url=db_url.get_DB_URL_AUTH)
+db_api_manager = DatabaseManager(db_url=db_url.get_DB_URL_API)
 
 
-__all__ = ["db_manager"]
+__all__ = [
+    "db_auth_manager",
+    "db_api_manager",
+]

@@ -15,6 +15,8 @@ class ApiSchema(BaseModel):
     user: str = "/user"
     set_data: str = "/set-data"
 
+    auth_jwt_cookie: str = "/auth/jwt/cookie"
+
     users: str = "/users"
 
     @property

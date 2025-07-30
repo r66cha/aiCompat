@@ -1,0 +1,18 @@
+services:
+  pg-auth:
+    image: postgres
+    environment:
+      POSTGRES_DB: ${DB_NAME_AUTH}
+      POSTGRES_USER: ${DB_USER_AUTH}
+      POSTGRES_PASSWORD: ${DB_PASSWORD_AUTH}
+    ports:
+      - '5432:5432'
+
+  pg-api:
+    image: postgres
+    environment:
+      POSTGRES_DB: ${DB_NAME_API}
+      POSTGRES_USER: ${DB_USER_API}
+      POSTGRES_PASSWORD: ${DB_PASSWORD_API}
+    ports:
+      - '5433:5432'

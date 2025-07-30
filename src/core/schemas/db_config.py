@@ -3,7 +3,7 @@
 # -- Imports
 
 from pydantic import BaseModel, PostgresDsn
-from src.core.database.config import db_url
+from src.core.database.db_config import db_url
 
 
 # --
@@ -12,7 +12,8 @@ from src.core.database.config import db_url
 class DatabaseConfigSchema(BaseModel):
     """Configuration schema for the database connection and SQLAlchemy engine."""
 
-    url: PostgresDsn = db_url.get_DB_URL
+    url_auth: PostgresDsn = db_url.get_DB_URL_AUTH
+    url_api: PostgresDsn = db_url.get_DB_URL_API
     echo: bool = False
     echo_pool: bool = False
     pool_size: int = 50

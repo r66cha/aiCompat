@@ -6,8 +6,8 @@ from .api import ApiSchema
 from .db_config import DatabaseConfigSchema
 from .log import LoggingConfigSchema
 from .run import RunConfigSchema, GunicornConfigSchema
+from .user import UserDescription, AgeEnum, Gender
 from .token import AccessTokenSchema
-from .user import UserRead, UserCreate, UserUpdate, UserRegistrationNotification
 
 
 __all__ = [
@@ -16,9 +16,8 @@ __all__ = [
     "LoggingConfigSchema",
     "RunConfigSchema",
     "GunicornConfigSchema",
+    "Gender",
+    "AgeEnum",
+    "UserDescription",
     "AccessTokenSchema",
-    "UserRead",
-    "UserCreate",
-    "UserUpdate",
-    "UserRegistrationNotification",
 ]

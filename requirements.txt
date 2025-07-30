@@ -15,6 +15,8 @@ cryptography==45.0.4
 dnspython==2.7.0
 email-validator==2.2.0
 fastapi==0.115.14
+fastapi-users==14.0.1
+fastapi-users-db-sqlalchemy==7.0.0
 frozenlist==1.7.0
 greenlet==3.2.3
 gunicorn==23.0.0
