@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import (
 )
 from collections.abc import AsyncGenerator
 from .db_config import db_url
+from src.core.settings.log_conf import log
 
 
 class DatabaseManager:
@@ -15,6 +16,10 @@ class DatabaseManager:
             bind=self.engine,
             expire_on_commit=False,
         )
+
+    async def dispose(self) -> None:
+        await self.engine.dispose()
+        log.info("Database engine disposed")
 
     # contextmanager use
     async def get_session(self) -> AsyncGenerator[AsyncSession, None]:

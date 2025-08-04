@@ -145,3 +145,79 @@
 
 
 # my_func(7)
+
+
+# from memory_profiler import profile
+
+
+# @profile
+# def my_func():
+#     a = []
+#     a.append(1)
+#     print(a)
+
+
+# my_func()
+
+# import objgraph
+
+# my_list = [1, 2, 3]
+# objgraph.show_refs([my_list], filename="my_list.png")
+
+# a = [x for x in range(5)]
+# iter_a = iter(a)
+# print(next(iter_a))
+# print(next(iter_a))
+
+# num_uppercase = sum(1 for line in open("file.txt") for chr in line if chr.isupper())
+# print(num_uppercase)
+
+
+# def f(*args, **kwargs):
+#     print(*args, kwargs)
+
+
+# f(1, 2, 3, x=4, y=5)
+
+
+# # Longest Polindrom
+# class Solution:
+#     def longest_palindrome(self, s: str) -> int:
+#         chars = dict()
+#         for ch in s:
+#             chars[ch] = chars.get(ch, 0) + 1
+
+#         length = 0
+#         odd_found = False
+
+#         for el in chars.values():
+#             if el % 2 == 0:
+#                 length += el
+#             else:
+#                 length += el - 1
+#                 odd_found = True
+
+#         if odd_found:
+#             length += 1
+
+#         return length
+
+
+# s = Solution()
+# result = s.longest_palindrome("abccccdd")
+# print(result)
+
+
+class Person:
+    def __init__(self, name):
+        self.name = name
+
+    def say_hello(self):
+        print("Hello, my name is", self.name)
+
+
+person1 = Person("Alice")
+person1.age = 25
+person1.__dict__["name"] = "Gogi"
+print(person1.__dict__)
+print(id(person1))

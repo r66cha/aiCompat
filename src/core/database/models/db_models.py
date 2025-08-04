@@ -5,6 +5,7 @@
 
 from sqlalchemy import Integer, String, Enum as SqlEnum
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.dialects.postgresql import JSONB
 from src.core.database.mixin.mx import IdIntPkMixin
 from src.core.schemas.user import PydanticJsonType, UserDescription, Gender, Zodiacs
 from typing import TYPE_CHECKING
@@ -24,6 +25,8 @@ class User(Base, IdIntPkMixin):
 
     __tablename__ = "users"
 
+    auth_id: Mapped[int] = mapped_column(Integer, nullable=False)
+
     name: Mapped[str] = mapped_column(String, nullable=False)
     age: Mapped[int] = mapped_column(Integer, nullable=False)
     gender: Mapped[str] = mapped_column(SqlEnum(Gender), nullable=False)
@@ -31,7 +34,7 @@ class User(Base, IdIntPkMixin):
     height: Mapped[int] = mapped_column(Integer, nullable=True)
     weight: Mapped[int] = mapped_column(Integer, nullable=True)
     description: Mapped[UserDescription] = mapped_column(
-        PydanticJsonType(UserDescription),
+        JSONB,
         nullable=True,
     )
     profile_photo_url: Mapped[str] = mapped_column(String, nullable=True)

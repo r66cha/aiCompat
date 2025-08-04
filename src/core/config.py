@@ -11,6 +11,7 @@ from src.core.schemas import (
     RunConfigSchema,
     GunicornConfigSchema,
     AccessTokenSchema,
+    FastStreamConfigSchema,
 )
 
 
@@ -26,8 +27,6 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         case_sensitive=False,
         env_file=(BASE_DIR / ".env"),
-        env_nested_delimiter="__",
-        env_prefix="APP_CONFIG__",
     )
 
     access_token: AccessTokenSchema = AccessTokenSchema()
@@ -36,6 +35,7 @@ class Settings(BaseSettings):
     logging: LoggingConfigSchema = LoggingConfigSchema()
     run: RunConfigSchema = RunConfigSchema()
     gunicorn: GunicornConfigSchema = GunicornConfigSchema()
+    fstream: FastStreamConfigSchema = FastStreamConfigSchema()
 
 
 settings = Settings()

@@ -50,12 +50,12 @@ class PydanticJsonType(TypeDecorator):
         super().__init__(*args, **kwargs)
         self.model = model
 
-    def process_bind_param(self, value):
+    def process_bind_param(self, value, dialect):
         if value is not None:
             return value.json()
         return None
 
-    def process_result_value(self, value):
+    def process_result_value(self, value, dialect):
         if value is not None:
             return self.model.model_validate_json(value)
         return None
@@ -76,3 +76,7 @@ class UserBaseData(BaseModel):
     weight: int | None = None
     gender: Gender
     zodiac: Zodiacs
+    description: UserDescription | None = None
+    profile_photo_url: str | None = None
+    contacts: str | None = None
+    auth_id: int

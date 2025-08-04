@@ -16,6 +16,7 @@ def get_jwt_strategy() -> JWTStrategy:
     Returns:
         JWTStrategy instance.
     """
+
     return JWTStrategy(
         secret=settings.access_token.reset_password_token_secret,
         lifetime_seconds=settings.access_token.lifetime_second,

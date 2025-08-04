@@ -2,6 +2,10 @@
 
 # -- Imports
 
+import os
+import jwt
+import json
+import logging
 from fastapi import (
     APIRouter,
     status,
@@ -10,9 +14,9 @@ from fastapi import (
     UploadFile,
     HTTPException,
     Depends,
-    Form,
     Header,
     Body,
+    Form,
     Cookie,
     File,
 )
@@ -26,7 +30,24 @@ from src.core.schemas.user import (
 from typing import Annotated
 from src.core.config import settings
 from typing import TYPE_CHECKING, Optional
+from sqlalchemy.ext.asyncio import AsyncSession
+from src.core.tasks.fs.broker.redis_broker import broker, user_info
+from src.core.database.db_manager import db_api_manager
+from src.core.database.crud.users import create_user
+from src.core.settings.log_conf import log
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
+logging.basicConfig(
+    level=settings.logging.log_level_value,
+    format=settings.logging.log_format,
+)
+
+
+KEY_SECRET = settings.access_token.reset_password_token_secret
+ALGORITHM = settings.access_token.algorithm
 
 # if TYPE_CHECKING:
 #     from fastapi import Request
@@ -47,6 +68,7 @@ user_router = APIRouter(
     name="set-info",
 )
 async def set_info_about_me(
+    session: Annotated[AsyncSession, Depends(db_api_manager.get_session)],
     request: Request,
     name: Annotated[str, Form(...)],
     age: Annotated[AgeEnum, Form(...)],
@@ -66,14 +88,58 @@ async def set_info_about_me(
             detail="Access token not found",
         )
 
-    return {
+    try:
+        payload: dict = jwt.decode(
+            jwt=access_token,
+            key=KEY_SECRET,
+            algorithms=[ALGORITHM],
+            audience="fastapi-users:auth",
+        )
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token expired",
+        )
+    except jwt.InvalidTokenError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid Token",
+        )
+
+    auth_id = payload.get("sub")
+    if auth_id is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token payload: missing user_auth_id",
+        )
+
+    log.info(f"user_auth_id: {auth_id}")
+
+    data = {
+        "auth_id": auth_id,
         "name": name,
-        "age": age,
+        "age": age.value,
+        "gender": gender.value,
+        "zodiac": zodiac.value,
         "height": height,
         "weight": weight,
-        "gender": gender,
-        "zodiac": zodiac,
     }
+
+    user_base_data = UserBaseData(**data)
+
+    print(user_base_data)
+
+    await create_user(
+        session=session,
+        user_base_data=user_base_data,
+    )
+
+    await broker.publish(
+        channel=f"users.{name}.info",
+        message=name,
+    )
+
+    return data
 
 
 # Set Description router
@@ -149,18 +215,6 @@ async def get_info_about_compatibility(
     cookie: Annotated[str, Cookie()] = None,
 ):
     """Return percentage compatibility with other user."""
-
-
-@user_router.get(
-    "/best-compat",
-    status_code=status.HTTP_200_OK,
-    name="get-best-compat",
-)
-async def get_best_compat_user(
-    request: Request,
-    cookie: Annotated[str, Cookie()] = None,
-):
-    """Return user with best compatibility for you."""
 
 
 @user_router.patch(

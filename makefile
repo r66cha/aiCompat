@@ -25,3 +25,9 @@ alembic-upgrade:
 
 secret:
 	python src/core/dependencies/auth_dep/secret_generator.py
+
+fs:
+	faststream run src.core.tasks.fs.app:app
+
+fs-docs:
+	faststream docs serve src.core.tasks.fs.app:app --port 8081

@@ -12,6 +12,7 @@ from src.core.schemas.user_auth import UserRead, UserCreate
 
 # --
 
+
 # Router instance
 auth_jwt_cookie_router = APIRouter(
     prefix=settings.api.auth_jwt_cookie,

@@ -16,3 +16,23 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD_API}
     ports:
       - '5433:5432'
+
+  redis:
+    image: redis:8-alpine
+    container_name: redis_broker
+    ports:
+      - '6379:6379'
+
+  maildev:
+    image: maildev/maildev
+    environment:
+      - TZ=Europe/Moscow
+      - MAILDEV_WEB_PORT=1080
+      - MAILDEV_SMTP_PORT=1025
+    ports:
+      - '8080:1080'
+      - '1025:1025'
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '1m'

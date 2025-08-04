@@ -1,8 +1,8 @@
 """
 
-Revision ID: 1e03dedc9003
+Revision ID: c87168567805
 Revises:
-Create Date: 2025-07-30 17:07:57.486095
+Create Date: 2025-08-02 15:05:52.866199
 
 """
 
@@ -15,7 +15,7 @@ from fastapi_users_db_sqlalchemy.generics import TIMESTAMPAware
 
 
 # revision identifiers, used by Alembic.
-revision: str = "1e03dedc9003"
+revision: str = "c87168567805"
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -40,7 +40,11 @@ def upgrade() -> None:
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("token", sa.String(), nullable=False),
         sa.Column("user_id", sa.Integer(), nullable=False),
-        sa.Column("expires_at", TIMESTAMPAware(timezone=True), nullable=False),
+        sa.Column(
+            "expires_at",
+            TIMESTAMPAware(timezone=True),
+            nullable=False,
+        ),
         sa.ForeignKeyConstraint(["user_id"], ["users.id"], ondelete="cascade"),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint("token"),
