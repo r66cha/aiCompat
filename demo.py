@@ -208,16 +208,181 @@
 # print(result)
 
 
-class Person:
-    def __init__(self, name):
-        self.name = name
+# class Person:
+#     def __init__(self, name):
+#         self.name = name
 
-    def say_hello(self):
-        print("Hello, my name is", self.name)
+#     def say_hello(self):
+#         print("Hello, my name is", self.name)
 
 
-person1 = Person("Alice")
-person1.age = 25
-person1.__dict__["name"] = "Gogi"
-print(person1.__dict__)
-print(id(person1))
+# person1 = Person("Alice")
+# person1.age = 25
+# person1.__dict__["name"] = "Gogi"
+# print(person1.__dict__)
+# print(id(person1))
+
+# import asyncio
+
+
+# async def f():
+#     await asyncio.sleep(1)
+#     return 1
+
+
+# async def main_f():
+#     # r1 = await f()
+#     # r2 = await f() + 1
+#     t1 = asyncio.create_task(f())
+#     t2 = asyncio.create_task(f())
+#     await asyncio.sleep(1)
+#     r1 = await t1
+#     r2 = await t2 + 1
+#     print(r1)
+#     print(r2)
+
+
+# asyncio.run(main_f())
+
+
+# import threading
+# import time
+
+
+# # Определение функции, которая будет выполняться в потоке
+# def print_numbers():
+#     for i in range(5):
+#         print(i)
+#         time.sleep(1)
+
+
+# # Создание потока
+# thread = threading.Thread(target=print_numbers)
+
+# # Запуск потока
+# thread.start()
+
+# # Ожидание завершения потока
+# thread.join()
+
+# # Проверка состояния потока
+# if thread.is_alive():
+#     print("Поток все еще выполняется")
+# else:
+#     print("Поток завершил выполнение")
+
+
+# import multiprocessing
+
+
+# def worker(num):
+#     print("Worker:", num)
+
+
+# if __name__ == "__main__":
+#     for i in range(5):
+#         p = multiprocessing.Process(target=worker, args=(i,))
+#         p.start()
+
+
+# import multiprocessing
+
+
+# def square_sum(numbers):
+#     return sum(x * x for x in numbers)
+
+
+# if __name__ == "__main__":
+#     numbers = range(1, 1000001)
+#     pool = multiprocessing.Pool()
+#     # разбиваем данные на чанки по 100 000 элементов
+#     chunk_size = 100_000
+#     chunks = [numbers[i : i + chunk_size] for i in range(0, len(numbers), chunk_size)]
+#     # запускаем обработку чанков в разных процессах
+#     results = pool.map(square_sum, chunks)
+#     total = sum(results)
+#     print(total)
+
+# import time
+# import numpy as np
+
+# # Python list
+# lst = list(range(10_000_000))
+# start = time.time()
+# lst_squared = [x * x for x in lst]
+# print("List:", time.time() - start)
+
+# # NumPy array
+# arr = np.arange(10_000_000)
+# start = time.time()
+# arr_squared = arr * arr  # векторная операция
+# print("NumPy:", time.time() - start)
+
+
+# class Descriptor:
+#     def __init__(self, default: int = 0):
+#         self.default = default
+#         self.name = None
+
+#     def __set_name__(self, owner, name):
+#         self.name = name  # сохраняем имя атрибута, например "value"
+
+#     def __set__(self, instance, value):
+#         if value < 0:
+#             raise ValueError("Value should be greater or equal to 0")
+#         instance.__dict__[self.name] = value
+#         print(instance.__dict__)
+#         print(self.__dict__)
+
+#     def __get__(self, instance, owner):
+#         if instance is None:
+#             return self
+#         return instance.__dict__.get(self.name, self.default)
+
+#     def __delete__(self, instance):
+#         print(f"{self.name} was deleted")
+#         if self.name in instance.__dict__:
+#             del instance.__dict__[self.name]
+
+
+# class MyClass:
+
+#     value = Descriptor()
+
+
+# x = MyClass()
+# y = MyClass()
+# x.value = 11
+# y.value = 88
+# print(x.value)  # 10
+# del x.value  # value was deleted
+# print(x.value)  # 10 (default)
+
+
+def process(input_string: str) -> str:
+
+    m_zero = 0
+    l_zero = 0
+    eq_zero = 0
+
+    input_lst = list(input_string.split(" "))
+    print(input_lst)
+
+    for num in input_lst:
+        try:
+            num = int(num)
+            if num > 0:
+                m_zero += 1
+            if num < 0:
+                l_zero += 1
+            if num == 0:
+                eq_zero += 1
+        except:
+            pass
+
+    return f"выше нуля:{m_zero},ниже нуля:{l_zero},равна нулю:{eq_zero}"
+
+
+input_string = input()
+output_string = process(input_string)
+print(output_string)
