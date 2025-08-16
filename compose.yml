@@ -36,3 +36,10 @@ services:
       driver: 'json-file'
       options:
         max-size: '1m'
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: rabbitmq
+    ports:
+      - '15672:15672'
+      - '5672:5672'
